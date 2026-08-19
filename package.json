@@ -1,7 +1,36 @@
 {
   "name": "dsh-live",
   "version": "0.1.0",
-  "description": "右侧悬浮多平台直播窗口：摄像头/麦克风、屏幕选区直播（画中画）、多平台多选同时推流（视频号/抖音/快手/斗鱼/B站/YY/虎牙/CC），ffmpeg 引擎真实 RTMP 推流。Cordis bundle 插件（DSH）。",
+  "description": "DeepSeek Harness（DSH）多平台直播推流插件：摄像头/麦克风采集、屏幕选区直播、画中画（PiP）、多平台多选同步推流（视频号/抖音/快手/斗鱼/B站/YY/虎牙/CC/自定义 RTMP）、ffmpeg 引擎真实推流。Cordis bundle 插件。",
+  "keywords": [
+    "dsh",
+    "deepseek-harness",
+    "deepseek",
+    "cordis",
+    "plugin",
+    "dsh-plugin",
+    "live",
+    "live-streaming",
+    "streaming",
+    "rtmp",
+    "ffmpeg",
+    "webcam",
+    "camera",
+    "microphone",
+    "screen-capture",
+    "screen-share",
+    "picture-in-picture",
+    "pip",
+    "bilibili",
+    "douyin",
+    "kuaishou",
+    "douyu",
+    "wechat-channels",
+    "huya",
+    "yy",
+    "直播",
+    "推流"
+  ],
   "type": "module",
   "main": "./index.mjs",
   "exports": {
@@ -19,6 +48,14 @@
   ],
   "scripts": {
     "check": "node --check index.mjs && node --check lib/client.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fore-vip/dsh-live.git"
+  },
+  "homepage": "https://github.com/fore-vip/dsh-live",
+  "bugs": {
+    "url": "https://github.com/fore-vip/dsh-live/issues"
   },
   "dsh": {
     "bundle": {

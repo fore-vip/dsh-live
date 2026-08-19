@@ -1,18 +1,49 @@
-# dsh-live（直播插件）
+# dsh-live — DeepSeek Harness 多平台直播推流插件
 
-右侧悬浮的多平台直播窗口：支持**摄像头 / 麦克风**、**屏幕选区直播（含右下角圆形画中画）**，可**多选平台同时推流**（视频号/抖音/快手/斗鱼/B站/YY/虎牙/CC + 自定义），内置 **ffmpeg 引擎**（检测/自动安装 + 真实 RTMP 推流）。
+> **DeepSeek Harness（DSH）生态的 Cordis 直播插件**：摄像头/麦克风采集、屏幕选区直播、画中画（PiP）、多平台多选同步推流（视频号、抖音、快手、斗鱼、B站、YY、虎牙、CC、自定义 RTMP），内置 **ffmpeg 引擎**（自动检测/一键安装/真实 RTMP 推流）。
 
-- 运行环境：DeepSeek Harness（DSH），Cordis bundle 插件（Node half + Client bundle）
-- 源码版本快照：`live-1/pkg-19`（run-18），与运行中的动态插件一致
-- 本仓库为**独立 git 仓库**（与 `plugins/` 层仓库分离）
+[![dsh-plugin topic](https://img.shields.io/badge/DSH-dsh--plugin-2F81F7)](https://github.com/topics/dsh-plugin)
+[![Cordis](https://img.shields.io/badge/Cordis-plugin-4B8BBE)](https://cordiverse.github.io/cordis/)
+[![DeepSeek](https://img.shields.io/badge/DeepSeek-Harness-7ee787)](https://github.com/deepseek-ai/deepseek-harness)
+[![RTMP](https://img.shields.io/badge/streaming-RTMP%20%2F%20ffmpeg-ff4d4f)]()
 
----
+## 安装（Installation）
+
+一行命令安装到 DeepSeek Harness（dsh）：
+
+```sh
+# npm 源（`dsh-live` 发布到 npm 后可用）
+dsh plugin --profile web add dsh-live
+
+# git 源（当前推荐，仓库产物已入库、无需构建）
+dsh plugin --profile web add "github:fore-vip/dsh-live#main"
+```
+
+> **本地开发/动态形态**：在 DSH 会话中用 `cordis_define` 新建插件，将 `src/host.js`、`src/client.js` 分别粘贴到 `code.host` / `code.client` 即可运行。
+> 安装后启动插件，页面右侧出现「直播」悬浮窗口。
+
+## 功能特性（Features）
+
+- 🎥 **摄像头 / 麦克风**：真实采集预览，麦克风开关与预览音量控制（默认静音防回音）
+- 🖥️ **屏幕选区直播**：`getDisplayMedia` 捕获后全屏拖拽框选直播区域
+- ⭕ **画中画（PiP）**：屏幕直播时摄像头以圆形小窗显示在预览右下角，可开关
+- 📡 **多平台多选同步推流**：视频号 / 抖音 / 快手 / 斗鱼 / B站 / YY / 虎牙 / CC / 自定义，选中即推、取消即停
+- ⚙️ **ffmpeg 引擎**：自动检测与一键安装 ffmpeg；真实 RTMP 推流（多路并行），地址行实时显示推流状态
+- 🪟 **悬浮窗口**：右侧悬浮、可拖动、可缩放、可最小化
+
+## 快速上手
+
+1. 插件激活后，页面**右侧**出现「直播」悬浮窗口（可按住标题栏拖动、右下角拖柄缩放、`—` 最小化）。
+2. 点击底部「**摄像头**」或「**屏幕直播**」选择直播画面源。
+3. 点击**顶部平台标签**加入推流（可多选，选中即同步推流，再点取消）。
+4. 屏幕直播时摄像头自动以**圆形画中画**显示在预览右下角（「画中画 开/关」控制）。
+5. 底部「⚙ 设置」为**每个平台独立配置**服务器地址与推流码，并可切换「模拟 / ffmpeg 真实推流」引擎。
 
 ## 目录结构
 
 ```
 dsh-live/
-├── package.json       # npm 包声明：name=dsh-live + dsh.bundle/dsh.client 契约
+├── package.json       # npm 包声明：name=dsh-live + dsh.bundle/dsh.client 契约 + keywords
 ├── cordis.patch.yml   # bundle 组合层：- insert: - id: dsh-live
 ├── index.mjs          # Node half 入口（bundle 形态 Cordis entry，封装 src/host.js 同一函数体）
 ├── lib/client.js      # Client bundle（dsh.client 通道，与 src/client.js 同一函数体）
@@ -21,20 +52,6 @@ dsh-live/
 │   └── client.js      # Client 半区：右侧悬浮直播窗口全部 UI 与媒体采集逻辑
 └── README.md          # 使用说明 + 各平台推流配置 + 市场发布
 ```
-
-## 如何加载
-
-- **本地目录（bundle）**：`cd dsh-live && dsh plugin --profile web add .`（需按 `files` 声明内容构建产物在库）
-- **git 源**：`dsh plugin --profile web add "github:fore-vip/dsh-live#<commit>"`（产物已入库，无需构建）
-- 或沿用动态插件方式：将 `src/host.js` / `src/client.js` 粘贴进 `cordis_define` 的 `code.host` / `code.client`。
-
-## 快速上手
-
-1. 插件激活后，页面**右侧**出现「直播」悬浮窗口（可按住标题栏拖动、右下角拖柄缩放、`—` 最小化）。
-2. 点击底部「**摄像头**」或「**屏幕直播**」选择直播画面源。
-3. 点击**顶部平台标签**加入推流（可多选，选中即同步推流，再点取消）。
-4. 屏幕直播时摄像头自动以**圆形画中画**显示在预览右下角（「画中画 开/关」控制）。
-5. 底部「⚙ 设置」为**每个平台独立配置**服务器地址与推流码。
 
 ## ffmpeg 引擎（真实推流）
 
