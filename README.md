@@ -165,8 +165,9 @@ DSH 插件市场 = **npm registry + GitHub 发现性**。插件是独立 npm 包
    dsh plugin --profile web add "github:fore-vip/dsh-live#<commit>"   # git 源（产物已入库）
    ```
 
-### 迁移说明（当前为动态形态快照）
+### 静态迁移状态（已完成）
 
-- `index.mjs` / `lib/client.js` 直接封装**动态运行器形态**的函数体：`apply` 内依赖运行器注入的 `harness`（`harness.handle` 包私有 RPC）与 client 运行器注入的 `React/styles/host`。
-- 静态 bundle 正式接入市场前需两步迁移：① Node half 将 `harness.handle` 替换为官方包私有 RPC 通道；② Client bundle 改用官方 client preset 构建（`__ModuleLoader__` 契约）。迁移完成前，本地验证请用「动态插件方式」加载 `src/` 下的函数体。
+- **Node half（`src/index.mjs` → `lib/index.mjs`）**：已静态化 —— `harness.handle` 替换为官方 **`ctx.webServer` HTTP 路由**（`/plugins/dsh-live/{status,targets,config,pushmode,ffmpeg,ffmpeg/install}`），服务经 `inject: ['timer','webServer','subprocess','shell']` 严格声明。
+- **Client bundle（`src/client.js` → `lib/client.js`）**：已静态化 —— `__ModuleLoader__` 契约 + `require('react')`；`host.call` → `fetch('/plugins/dsh-live/*')`；`ctx.timer` → `window.setInterval/setTimeout`；`ctx.slots` 注册 `shell.overlay`。由 `scripts/build-client.js` 从动态函数体自动生成（可复现）。
+- 构建：`npm run build`（生成 `lib/` 产物并入库）；校验：`npm run check`。
 

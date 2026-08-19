@@ -1,6 +1,6 @@
 {
   "name": "dsh-live",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "DeepSeek Harness（DSH）多平台直播推流插件：摄像头/麦克风采集、屏幕选区直播、画中画（PiP）、多平台多选同步推流（视频号/抖音/快手/斗鱼/B站/YY/虎牙/CC/自定义 RTMP）、ffmpeg 引擎真实推流。Cordis bundle 插件。",
   "keywords": [
     "dsh",
@@ -32,22 +32,43 @@
     "推流"
   ],
   "type": "module",
-  "main": "./index.mjs",
+  "main": "./lib/index.mjs",
   "exports": {
-    ".": "./index.mjs",
+    ".": "./lib/index.mjs",
     "./client": "./lib/client.js",
     "./cordis.patch.yml": "./cordis.patch.yml",
     "./package.json": "./package.json"
   },
   "files": [
-    "index.mjs",
     "lib",
     "src",
+    "scripts",
     "cordis.patch.yml",
     "README.md"
   ],
   "scripts": {
-    "check": "node --check index.mjs && node --check lib/client.js"
+    "build": "node scripts/build-client.js && node -e \"require('fs').copyFileSync('src/index.mjs','lib/index.mjs')\"",
+    "check": "node --check lib/index.mjs && node --check lib/client.js"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "peerDependencies": {
+    "@deepseek-ai/cordis": "^4.0.1",
+    "react": "^18.2.0"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "inject": [
+        "@deepseek-ai/dsh-client-runtime",
+        "@deepseek-ai/dsh-client-ui-slots",
+        "@deepseek-ai/dsh-client-locale"
+      ],
+      "platform": "web"
+    }
   },
   "repository": {
     "type": "git",
@@ -56,14 +77,6 @@
   "homepage": "https://github.com/fore-vip/dsh-live",
   "bugs": {
     "url": "https://github.com/fore-vip/dsh-live/issues"
-  },
-  "dsh": {
-    "bundle": {
-      "patch": "./cordis.patch.yml"
-    },
-    "client": {
-      "platform": "web"
-    }
   },
   "license": "UNLICENSED"
 }
