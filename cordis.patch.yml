@@ -1,0 +1,4 @@
+# dsh-live：向组合挂载自身（bundle 组合层声明）
+- insert:
+    - id: dsh-live
+      name: 'dsh-live'

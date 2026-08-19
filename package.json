@@ -1,0 +1,32 @@
+{
+  "name": "dsh-live",
+  "version": "0.1.0",
+  "description": "右侧悬浮多平台直播窗口：摄像头/麦克风、屏幕选区直播（画中画）、多平台多选同时推流（视频号/抖音/快手/斗鱼/B站/YY/虎牙/CC），ffmpeg 引擎真实 RTMP 推流。Cordis bundle 插件（DSH）。",
+  "type": "module",
+  "main": "./index.mjs",
+  "exports": {
+    ".": "./index.mjs",
+    "./client": "./lib/client.js",
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "index.mjs",
+    "lib",
+    "src",
+    "cordis.patch.yml",
+    "README.md"
+  ],
+  "scripts": {
+    "check": "node --check index.mjs && node --check lib/client.js"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web"
+    }
+  },
+  "license": "UNLICENSED"
+}
